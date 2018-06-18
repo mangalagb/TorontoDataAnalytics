@@ -34,25 +34,42 @@ def read_files():
                     pass
 
 
-def clean_data():
+def clean_data_and_write_to_file():
     print("Cleaning the data....")
     # Remove subway yards and bus garages
-    subway_delays.pop('WILSON HOSTLER', None)
-    subway_delays.pop('KENNEDY PLATFORM 1', None)
+    values_to_remove = {"WILSON HOSTLER", "KENNEDY PLATFORM 1", "KENNEDY BD STATION"}
+    subway_details = {}
+
+    for key, value in subway_delays.items():
+        value_flag = True
+
+        for invalid_value in values_to_remove:
+            if invalid_value in key:
+                value_flag = False
+
+        if value_flag and value is not 0:
+            name = key.split("(", 1)[0]
+            if name not in subway_details:
+                subway_details[name] = value
+            else:
+                subway_details[name] += value
+
+    # Replace with the clean version
+    subway_delays.clear()
+    write_to_file(subway_details)
 
 
-def sort_subway_delay():
-    sorted_subway_delays = sorted(subway_delays.items(),
+def sort_subway_delay(subway_details):
+    sorted_subway_delays = sorted(subway_details.items(),
                                   key=operator.itemgetter(1), reverse=True)
     return sorted_subway_delays
 
 
-def write_to_file():
+def write_to_file(subway_details):
     print("Writing delay data to file...")
     with open('../Resources/subway_delays.txt', 'w') as file:
-        file.write(json.dumps(sort_subway_delay()))
+        file.write(json.dumps(sort_subway_delay(subway_details)))
 
 read_files()
-clean_data()
-write_to_file()
-
+clean_data_and_write_to_file()
+print("All Done!!")

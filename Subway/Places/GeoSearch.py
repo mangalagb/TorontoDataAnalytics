@@ -31,8 +31,8 @@ def get_coordinates(subway_names):
     try:
         for subway in subway_names:
             name = subway[0]
-            coordinates = send_request(name)
-            subway_with_coordinates.append([name, subway[1], list(coordinates.items())])
+            coordinates = send_request(name + ",Toronto")
+            subway_with_coordinates.append([name, subway[1], coordinates])
     except:
         print("error")
     write_to_file(subway_with_coordinates)
