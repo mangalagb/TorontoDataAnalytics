@@ -19,4 +19,5 @@ How to run this project
 2) Set up PYTHONPATH for your environment
 3) Download the following libraries using pip : pandas, operator, json,
 googlemaps, jupyter, matplotlib, math, mplleaflet
+4) To run jupyter notebook, see (http://jupyter.org/)
 
